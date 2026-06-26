@@ -47,6 +47,48 @@
       overflow: hidden;
     }
 
+    .top-nav {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(7, 11, 22, 0.88);
+      backdrop-filter: blur(16px);
+    }
+
+    .tab-list {
+      width: min(1220px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+    }
+
+    .tab-button {
+      width: auto;
+      min-height: 38px;
+      padding: 9px 13px;
+      border-radius: 999px;
+      color: #dcecff;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(167, 190, 224, 0.18);
+      box-shadow: none;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .tab-button.active {
+      color: #ffffff;
+      border-color: rgba(111, 182, 255, 0.42);
+      background: linear-gradient(135deg, rgba(74, 167, 255, 0.32), rgba(141, 124, 255, 0.26));
+    }
+
+    [data-view] {
+      display: block;
+    }
+
+    [data-view]:not(.active-view) {
+      display: none !important;
+    }
+
     .wrap {
       width: min(1220px, calc(100% - 32px));
       margin: 0 auto;
@@ -184,9 +226,7 @@
     }
 
     main.dashboard {
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(390px, 0.95fr);
-      gap: 24px;
+      display: block;
       padding: 24px 0 42px;
     }
 
@@ -198,6 +238,10 @@
       min-width: 0;
     }
 
+    .dashboard-left {
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+
     .panel {
       background: var(--panel);
       border: 1px solid var(--line);
@@ -207,6 +251,13 @@
       backdrop-filter: blur(18px);
       min-width: 0;
       transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .view-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
     }
 
     .panel-header {
@@ -635,10 +686,20 @@
         font-size: 28px;
       }
     }
-  </style>
+</style>
 </head>
 <body>
-  <header>
+  <nav class="top-nav" aria-label="KYC workflow views">
+    <div class="tab-list" role="tablist" aria-label="KYC case workspace">
+      <button type="button" class="tab-button active" data-tab="overview" role="tab" aria-selected="true" onclick="switchView('overview')">Overview</button>
+      <button type="button" class="tab-button" data-tab="case-input" role="tab" aria-selected="false" onclick="switchView('case-input')">Case Input</button>
+      <button type="button" class="tab-button" data-tab="results" role="tab" aria-selected="false" onclick="switchView('results')">Results</button>
+      <button type="button" class="tab-button" data-tab="actions" role="tab" aria-selected="false" onclick="switchView('actions')">Actions</button>
+      <button type="button" class="tab-button" data-tab="governance" role="tab" aria-selected="false" onclick="switchView('governance')">Governance</button>
+    </div>
+  </nav>
+
+  <header data-view="overview" class="active-view">
     <div class="wrap hero">
       <div>
         <p class="eyebrow">2026 RegTech Workflow Prototype</p>
@@ -687,10 +748,42 @@
         <p class="kpi-note">Educational routing recommendation.</p>
       </div>
     </section>
+    <section class="wrap view-card-grid" aria-label="Overview actions and snapshot">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="step-kicker">Demo Controls</p>
+            <h2>Sample Cases</h2>
+            <p class="note">Load a realistic sample, then generate the review to see the workflow outputs.</p>
+          </div>
+          <div class="badge">S</div>
+        </div>
+        <div class="sample-actions" aria-label="Overview sample cases">
+          <button type="button" class="secondary" onclick="loadSampleCase('lowRisk')">Load Low Risk Case</button>
+          <button type="button" class="secondary" onclick="loadSampleCase('blockedBo')">Load Blocked BO Case</button>
+          <button type="button" class="secondary" onclick="loadSampleCase('sanctions')">Load Sanctions Escalation Case</button>
+        </div>
+        <div class="button-row">
+          <button type="button" onclick="generateCaseReview()">Generate Case Review</button>
+          <button type="button" class="outline" onclick="resetForm()">Reset to Empty Case</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="step-kicker">Case Snapshot</p>
+            <h2>Short Case Snapshot</h2>
+            <p class="note">A compact summary appears here after a case review is generated.</p>
+          </div>
+          <div class="badge">O</div>
+        </div>
+        <div id="caseSnapshot" class="output-box empty">Generate a case review to see a short case snapshot.</div>
+      </div>
+    </section>
   </header>
 
   <main class="wrap dashboard">
-    <form id="kycForm" class="dashboard-left">
+    <form id="kycForm" class="dashboard-left" data-view="case-input">
       <section class="panel">
         <div class="panel-header">
           <div>
@@ -1014,7 +1107,7 @@
     </form>
 
     <section class="dashboard-right">
-      <section class="panel results">
+      <section class="panel results" data-view="results">
         <div class="panel-header">
           <div>
             <p class="step-kicker">Bottleneck Engine</p>
@@ -1117,11 +1210,9 @@
         <label style="margin-top: 14px;">Case Queue Prioritizer</label>
         <div id="queuePriorityOutput" class="output-box empty">Generate a review to see urgency score, priority, and reasons.</div>
 
-        <label style="margin-top: 14px;">Follow-Up Actions</label>
-        <div id="followUpOutput" class="output-box empty">Generate a review to assign follow-up actions.</div>
       </section>
 
-      <section class="panel">
+      <section class="panel" data-view="governance">
         <div class="panel-header">
           <div>
             <p class="step-kicker">Governance &amp; Audit</p>
@@ -1134,7 +1225,7 @@
         <button id="copyNoteButton" type="button" class="secondary" onclick="copyText('analystNote', 'copyNoteButton')" disabled>Copy Analyst Note</button>
       </section>
 
-      <section class="panel">
+      <section class="panel" data-view="actions">
         <div class="panel-header">
           <div>
             <p class="step-kicker">Action Center</p>
@@ -1143,6 +1234,8 @@
           </div>
           <div class="badge">8</div>
         </div>
+        <label>Follow-Up Actions</label>
+        <div id="followUpOutput" class="output-box empty">Generate a case review first to create follow-up actions and communication draft.</div>
         <div class="grid">
           <div>
             <label for="emailRecipientType">Recipient Type</label>
@@ -1167,7 +1260,7 @@
         <button id="copyEmailButton" type="button" class="secondary" onclick="copyText('emailDraft', 'copyEmailButton')" disabled>Copy Follow-Up Draft</button>
       </section>
 
-      <section class="panel">
+      <section class="panel" data-view="governance">
         <div class="panel-header">
           <div>
             <p class="step-kicker">Governance &amp; Audit</p>
@@ -1180,7 +1273,7 @@
         <button id="copyAuditButton" type="button" class="secondary" onclick="copyText('auditTrail', 'copyAuditButton')" disabled>Copy Audit Trail</button>
       </section>
 
-      <section class="panel">
+      <section class="panel" data-view="governance">
         <div class="panel-header">
           <div>
             <p class="step-kicker">Governance &amp; Audit</p>
@@ -1193,7 +1286,7 @@
       </section>
     </section>
 
-    <section class="panel explainability-center">
+    <section class="panel explainability-center" data-view="governance">
       <div class="panel-header">
         <div>
           <p class="step-kicker">Governance &amp; Audit</p>
@@ -1676,6 +1769,18 @@
 
     function getValue(id) {
       return document.getElementById(id).value.trim();
+    }
+
+    function switchView(viewName) {
+      document.querySelectorAll("[data-view]").forEach(function(section) {
+        section.classList.toggle("active-view", section.getAttribute("data-view") === viewName);
+      });
+
+      document.querySelectorAll(".tab-button").forEach(function(button) {
+        const isActive = button.getAttribute("data-tab") === viewName;
+        button.classList.toggle("active", isActive);
+        button.setAttribute("aria-selected", isActive ? "true" : "false");
+      });
     }
 
     function renderDocumentChecklist() {
@@ -2835,6 +2940,16 @@
       const openBottleneckCount = bottlenecks.includes("Ready for Review") ? 0 : bottlenecks.length;
       const actionText = formatActions(actions) + "\n\nReason Codes\n" + reasonCodeText;
       const reviewerChecklistText = generateReviewerChecklist(data, boStatus, screening, riskLevel, actions, evidenceIssues, sofSowStatus, reasonCodes);
+      const caseSnapshotText =
+        "Case ID: " + data.caseId + "\n" +
+        "Customer: " + data.customerName + "\n" +
+        "Entity Type: " + data.entityType + "\n" +
+        "Review Type: " + data.relationshipType + "\n" +
+        "Case Stage: " + caseStage + "\n" +
+        "Readiness: " + readiness + "\n" +
+        "Risk: " + risk.score + " / 100 (" + riskLevel + ")\n" +
+        "Suggested Review Path: " + cddEddRecommendation + "\n" +
+        "Open Bottlenecks: " + openBottleneckCount;
 
       currentAnalystNote =
         "KYC CASE BOTTLENECK REVIEW NOTE\n\n" +
@@ -2954,10 +3069,10 @@
         "Human Review Disclaimer\n" +
         "This tool supports analyst workflow simulation. Final review, escalation, approval, and customer decisioning require human compliance review.";
 
-      updateOutputs(aging, boStatus, screening, risk, riskLevel, readiness, queuePriority, documentGapText, riskBreakdownText, queuePriorityText, bottleneckText, actionText, refreshAssessment, refreshText, riskProfileText, evidenceQualityText, sofSowText, recommendedDecision, cddEddRecommendation, cddEddText, formatPolicyRules(triggeredPolicyRules), openBottleneckCount, decisionConfidence, decisionConfidenceText, caseStage, reasonCodeText, boStatusText, reviewerChecklistText);
+      updateOutputs(aging, boStatus, screening, risk, riskLevel, readiness, queuePriority, documentGapText, riskBreakdownText, queuePriorityText, bottleneckText, actionText, refreshAssessment, refreshText, riskProfileText, evidenceQualityText, sofSowText, recommendedDecision, cddEddRecommendation, cddEddText, formatPolicyRules(triggeredPolicyRules), openBottleneckCount, decisionConfidence, decisionConfidenceText, caseStage, reasonCodeText, boStatusText, reviewerChecklistText, caseSnapshotText);
     }
 
-    function updateOutputs(aging, boStatus, screening, risk, riskLevel, readiness, queuePriority, documentGapText, riskBreakdownText, queuePriorityText, bottleneckText, actionText, refreshAssessment, refreshText, riskProfileText, evidenceQualityText, sofSowText, recommendedDecision, cddEddRecommendation, cddEddText, triggeredRulesText, openBottleneckCount, decisionConfidence, decisionConfidenceText, caseStage, reasonCodeText, boStatusText, reviewerChecklistText) {
+    function updateOutputs(aging, boStatus, screening, risk, riskLevel, readiness, queuePriority, documentGapText, riskBreakdownText, queuePriorityText, bottleneckText, actionText, refreshAssessment, refreshText, riskProfileText, evidenceQualityText, sofSowText, recommendedDecision, cddEddRecommendation, cddEddText, triggeredRulesText, openBottleneckCount, decisionConfidence, decisionConfidenceText, caseStage, reasonCodeText, boStatusText, reviewerChecklistText, caseSnapshotText) {
       const agingEl = document.getElementById("caseAgingStatus");
       const scoreEl = document.getElementById("riskScore");
       const levelEl = document.getElementById("riskLevel");
@@ -3016,6 +3131,7 @@
       setTextOutput("auditTrail", currentAuditTrail);
       setTextOutput("triggeredRulesOutput", triggeredRulesText);
       setTextOutput("reviewerChecklist", reviewerChecklistText);
+      setTextOutput("caseSnapshot", caseSnapshotText);
 
       document.getElementById("copyNoteButton").disabled = false;
       document.getElementById("copyNoteButton").textContent = "Copy Analyst Note";
@@ -3081,12 +3197,13 @@
       resetOutput("reasonCodesOutput", "Generate a review to see bottleneck and decision reason codes.");
       resetOutput("queuePriorityOutput", "Generate a review to see urgency score, priority, and reasons.");
       resetOutput("bottleneckOutput", "Generate a review to diagnose case bottlenecks.");
-      resetOutput("followUpOutput", "Generate a review to assign follow-up actions.");
+      resetOutput("followUpOutput", "Generate a case review first to create follow-up actions and communication draft.");
       resetOutput("analystNote", "Generate a review to create the analyst note.");
       resetOutput("emailDraft", "Generate a case review first to draft follow-up communication.");
       resetOutput("auditTrail", "Generate a review to create the audit trail summary.");
       resetOutput("triggeredRulesOutput", "Generate a review to see only the rules triggered by this case.");
       resetOutput("reviewerChecklist", "Generate a review to create the reviewer checklist.");
+      resetOutput("caseSnapshot", "Generate a case review to see a short case snapshot.");
 
       document.getElementById("emailRecipientType").value = "Relationship Manager";
       document.getElementById("emailTone").value = "Standard";
@@ -3146,6 +3263,7 @@
 
     renderDocumentChecklist();
     resetForm();
+    switchView("overview");
   </script>
 </body>
 </html>

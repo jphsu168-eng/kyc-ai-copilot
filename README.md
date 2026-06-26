@@ -12,6 +12,8 @@ Modern KYC reviews are delayed by missing evidence, incomplete beneficial owners
 
 This project simulates a 2026-style KYC case workstation that helps identify case blockers, explain risk drivers, recommend the next review path, and create consistent analyst documentation.
 
+The current prototype uses a single-page multi-view interface to simulate how a production KYC platform could separate case overview, evidence review, risk assessment, action tracking, and audit governance.
+
 ## Important Disclaimer
 
 This is an educational portfolio project. It does not perform real sanctions screening, OFAC checks, adverse media searches, identity verification, customer verification, transaction monitoring, or bank decisioning.
@@ -29,16 +31,16 @@ This tool supports analyst workflow simulation. Final review, escalation, approv
 
 ## Product Structure
 
-- **Command Center:** KPI cards for risk score, readiness, SLA status, bottlenecks, case stage, and suggested review path.
-- **Case Review Inputs:** case setup, review type, trigger event, evidence, beneficial ownership, SOF/SOW, screening, and risk inputs.
-- **Bottleneck Engine:** executive summary, diagnostic details, customer risk profile, evidence quality issues, reason codes, and suggested review path.
-- **Action Center:** follow-up actions and a role-specific follow-up communication draft.
-- **Governance & Audit:** analyst review note, reviewer checklist, audit trail, triggered rules, and full rule library.
-- **Explainability Center:** triggered rules first, with the full rule library collapsed below.
+- **Overview:** product title, core product question, educational disclaimer, Command Center KPIs, sample cases, generate/reset controls, and short case snapshot.
+- **Case Input:** case setup, review type, trigger event review, document evidence review, beneficial ownership review, SOF/SOW review, screening triage, and risk indicators.
+- **Results:** executive summary, diagnostic details, customer risk profile, evidence quality issues, risk breakdown, bottlenecks, reason codes, and queue priority.
+- **Actions:** follow-up actions with owner, priority, reason code, status, and follow-up communication draft controls.
+- **Governance:** analyst review note, reviewer checklist, audit trail, triggered rules, full rule library, and human review disclaimer.
 
 ## Key Features
 
 - Command Center with polished empty states and dynamic KPI updates
+- Single-page multi-view navigation with Overview, Case Input, Results, Actions, and Governance tabs
 - Sample case buttons for Low Risk, Blocked BO, and Sanctions Escalation demos
 - Case Review Inputs for onboarding, periodic review, trigger event review, and ongoing monitoring alert workflows
 - Document Evidence Review with required documents by entity type
@@ -61,14 +63,13 @@ This tool supports analyst workflow simulation. Final review, escalation, approv
 
 ## Workflow
 
-1. Load a sample case or enter a new case manually.
-2. Complete Step 1: Case Setup, review type, trigger reason, dates, and product/service.
-3. Complete Step 2: Document Evidence Review, Beneficial Ownership Review, and SOF/SOW Review.
-4. Complete Step 3: Screening & Risk Review.
-5. Click **Generate Case Review**.
-6. Review the Command Center and Bottleneck Engine outputs.
-7. Use the Action Center to review follow-up actions and copy the communication draft.
-8. Use Governance & Audit outputs for analyst notes, reviewer checklist, audit trail, and triggered-rule rationale.
+1. Start in **Overview** to load a sample case or generate/reset a review.
+2. Use **Case Input** to complete case setup, evidence, ownership, SOF/SOW, screening, and risk fields.
+3. Use **Results** to review executive summary, diagnostic details, bottlenecks, reason codes, and queue priority.
+4. Use **Actions** to review follow-up actions and copy a role-specific communication draft.
+5. Use **Governance** to review analyst notes, reviewer checklist, audit trail, triggered rules, and the collapsed full rule library.
+
+Switching tabs does not clear form data or generated outputs because the project remains a single HTML page with JavaScript-controlled views.
 
 ## Document Evidence Review
 
