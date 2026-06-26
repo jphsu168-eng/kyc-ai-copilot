@@ -1,6 +1,6 @@
 # KYC Case Bottleneck Resolver
 
-A rule-based KYC workflow prototype that simulates document evidence review, beneficial ownership completeness checks, screening triage, customer risk profiling, case bottleneck diagnosis, reason-code driven follow-up actions, analyst review notes, and audit-friendly decision trails.
+A B2B KYC workflow prototype for enterprise compliance teams that simulates document evidence review, beneficial ownership completeness checks, screening triage, customer risk profiling, case bottleneck diagnosis, reason-code driven follow-up actions, analyst review notes, and audit-ready decision trails.
 
 ## Core Product Question
 
@@ -20,14 +20,32 @@ This is an educational portfolio project. It does not perform real sanctions scr
 
 This tool supports analyst workflow simulation. Final review, escalation, approval, and customer decisioning require human compliance review.
 
-## Target Users
+## Target Customer
+
+This prototype is designed as a B2B KYC workflow concept for enterprise compliance teams, including banks, fintech companies, payment companies, MSBs, and compliance operations teams that review business customers, legal entities, and higher-risk onboarding cases.
+
+It is not designed for individual consumers. The primary users are KYC analysts, AML analysts, compliance reviewers, relationship managers, QA reviewers, and KYC operations managers.
+
+Individual remains a supported entity type in the demo because enterprise compliance teams may review sole proprietors, control persons, or individual-linked cases as part of broader KYC operations.
+
+## Buyer / User Distinction
+
+### Buyer / Decision Maker
+
+- Head of Compliance
+- KYC Operations Manager
+- AML Compliance Officer
+- Risk Operations Director
+- FinTech COO
+
+### Primary Users
 
 - KYC Analyst
 - AML Analyst
 - Compliance Analyst
-- Relationship Manager support team
+- Relationship Manager
 - Compliance Reviewer
-- KYC Operations Manager
+- QA Analyst
 
 ## Product Structure
 
