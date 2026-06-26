@@ -716,6 +716,64 @@
       margin-top: 0;
     }
 
+    .sample-button {
+      min-height: 54px;
+      transform: none;
+    }
+
+    .sample-button:hover,
+    .sample-button:active,
+    .sample-button.is-selected,
+    .sample-button.is-active {
+      min-height: 54px;
+      padding: 9px 13px;
+      margin-top: 0;
+      border-width: 1px;
+      font-size: 13px;
+      transform: none;
+    }
+
+    .sample-button.is-selected,
+    .sample-button.is-active {
+      color: #ffffff;
+      background: linear-gradient(135deg, rgba(74, 167, 255, 0.34), rgba(85, 217, 155, 0.16));
+      border-color: rgba(111, 182, 255, 0.54);
+      box-shadow: 0 12px 28px rgba(74, 167, 255, 0.18);
+      opacity: 1;
+    }
+
+    .selected-indicator {
+      display: block;
+      min-height: 15px;
+      margin-top: 2px;
+      color: var(--low);
+      font-size: 11px;
+      font-weight: 850;
+      line-height: 1.25;
+      opacity: 0;
+    }
+
+    .sample-button.is-selected .selected-indicator {
+      opacity: 1;
+    }
+
+    .button-feedback {
+      margin: 12px 0 0;
+      padding: 10px 12px;
+      border: 1px solid rgba(111, 182, 255, 0.18);
+      border-radius: 12px;
+      color: var(--muted);
+      background: rgba(111, 182, 255, 0.055);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .button-feedback.is-active {
+      color: #dff7ed;
+      border-color: rgba(85, 217, 155, 0.24);
+      background: rgba(85, 217, 155, 0.075);
+    }
+
     .workflow-helper {
       margin: 0 0 12px;
       color: var(--muted);
@@ -756,12 +814,12 @@
     }
 
     button:hover {
-      transform: translateY(-1px);
+      transform: none;
       box-shadow: 0 16px 42px rgba(111, 182, 255, 0.32);
     }
 
     button:active {
-      transform: translateY(0);
+      transform: none;
     }
 
     .outline {
@@ -797,6 +855,13 @@
       cursor: not-allowed;
       box-shadow: none;
       transform: none;
+    }
+
+    .secondary.is-copied {
+      color: #dff7ed;
+      border-color: rgba(85, 217, 155, 0.36);
+      background: rgba(85, 217, 155, 0.12);
+      box-shadow: 0 8px 22px rgba(85, 217, 155, 0.12);
     }
 
     .results {
@@ -1292,10 +1357,11 @@
           <div class="badge">S</div>
         </div>
         <div class="sample-actions" aria-label="Overview sample cases">
-          <button type="button" class="secondary" onclick="loadSampleCase('lowRisk')">Load Low Risk Case</button>
-          <button type="button" class="secondary" onclick="loadSampleCase('blockedBo')">Load Blocked BO Case</button>
-          <button type="button" class="secondary" onclick="loadSampleCase('sanctions')">Load Sanctions Escalation Case</button>
+          <button type="button" class="secondary sample-button" data-sample="lowRisk" aria-pressed="false" onclick="loadSampleCase('lowRisk')">Load Low Risk Case<span class="selected-indicator" aria-hidden="true">✓ Selected</span></button>
+          <button type="button" class="secondary sample-button" data-sample="blockedBo" aria-pressed="false" onclick="loadSampleCase('blockedBo')">Load Blocked BO Case<span class="selected-indicator" aria-hidden="true">✓ Selected</span></button>
+          <button type="button" class="secondary sample-button" data-sample="sanctions" aria-pressed="false" onclick="loadSampleCase('sanctions')">Load Sanctions Escalation Case<span class="selected-indicator" aria-hidden="true">✓ Selected</span></button>
         </div>
+        <p id="overviewSampleFeedback" class="button-feedback">No sample case loaded yet.</p>
         <div class="workflow-actions three">
           <button type="button" class="secondary" onclick="switchView('case-input')">Start Case Input →</button>
           <button type="button" onclick="generateCaseReview()">Generate Case Review</button>
@@ -1332,10 +1398,11 @@
           <h3 class="subsection-heading">Demo Shortcuts</h3>
           <p class="subsection-note">Load a sample case to preview how the workflow behaves.</p>
           <div class="sample-actions" aria-label="Sample cases">
-            <button type="button" class="secondary" onclick="loadSampleCase('lowRisk')">Low Risk</button>
-            <button type="button" class="secondary" onclick="loadSampleCase('blockedBo')">Blocked BO</button>
-            <button type="button" class="secondary" onclick="loadSampleCase('sanctions')">Sanctions</button>
+            <button type="button" class="secondary sample-button" data-sample="lowRisk" aria-pressed="false" onclick="loadSampleCase('lowRisk')">Low Risk<span class="selected-indicator" aria-hidden="true">✓ Selected</span></button>
+            <button type="button" class="secondary sample-button" data-sample="blockedBo" aria-pressed="false" onclick="loadSampleCase('blockedBo')">Blocked BO<span class="selected-indicator" aria-hidden="true">✓ Selected</span></button>
+            <button type="button" class="secondary sample-button" data-sample="sanctions" aria-pressed="false" onclick="loadSampleCase('sanctions')">Sanctions<span class="selected-indicator" aria-hidden="true">✓ Selected</span></button>
           </div>
+          <p id="caseInputSampleFeedback" class="button-feedback">No sample case loaded yet.</p>
         </div>
 
         <div class="case-subsection">
@@ -2369,6 +2436,13 @@
     let currentEmailDraft = "";
     let currentEmailContext = null;
     let reviewGenerated = false;
+    let selectedSampleCase = "";
+
+    const SAMPLE_CASE_LABELS = {
+      lowRisk: "Low Risk Case",
+      blockedBo: "Blocked BO Case",
+      sanctions: "Sanctions Escalation Case"
+    };
 
     function getValue(id) {
       return document.getElementById(id).value.trim();
@@ -2544,6 +2618,31 @@
       });
     }
 
+    function updateSampleSelection(sampleName) {
+      selectedSampleCase = sampleName || "";
+      const label = SAMPLE_CASE_LABELS[selectedSampleCase] || "";
+
+      document.querySelectorAll(".sample-button").forEach(function(button) {
+        const isSelected = button.getAttribute("data-sample") === selectedSampleCase;
+        button.classList.toggle("is-selected", isSelected);
+        button.classList.toggle("is-active", isSelected);
+        button.setAttribute("aria-pressed", isSelected ? "true" : "false");
+      });
+
+      ["overviewSampleFeedback", "caseInputSampleFeedback"].forEach(function(id) {
+        const element = document.getElementById(id);
+        if (!element) return;
+
+        if (label) {
+          element.classList.add("is-active");
+          element.textContent = "Sample case loaded: " + label + ". Review the pre-filled case inputs, then click Generate Case Review.";
+        } else {
+          element.classList.remove("is-active");
+          element.textContent = "No sample case loaded yet.";
+        }
+      });
+    }
+
     function loadSampleCase(sampleName) {
       const sample = SAMPLE_CASES[sampleName];
       if (!sample) return;
@@ -2570,6 +2669,7 @@
       setValues(sample.screening);
       updateEntityContext();
       updateTriggerContext();
+      updateSampleSelection(sampleName);
     }
 
     function formatList(items, emptyText) {
@@ -3921,6 +4021,8 @@
       currentEmailDraft = "";
       currentEmailContext = null;
       reviewGenerated = false;
+      selectedSampleCase = "";
+      updateSampleSelection("");
 
       document.getElementById("caseAgingStatus").textContent = "Enter Case Dates";
       document.getElementById("riskScore").textContent = "Awaiting Review";
@@ -4002,7 +4104,7 @@
 
       if (navigator.clipboard) {
         navigator.clipboard.writeText(text).then(function() {
-          button.textContent = "Copied!";
+          showCopiedFeedback(button);
         }).catch(function() {
           copyWithFallback(text, button);
         });
@@ -4023,12 +4125,28 @@
 
       try {
         document.execCommand("copy");
-        button.textContent = "Copied!";
+        showCopiedFeedback(button);
       } catch (error) {
         button.textContent = "Copy not available";
       }
 
       document.body.removeChild(textArea);
+    }
+
+    function showCopiedFeedback(button) {
+      const originalText = button.getAttribute("data-default-text") || button.textContent;
+      button.setAttribute("data-default-text", originalText);
+      button.textContent = "Copied";
+      button.classList.add("is-copied");
+
+      if (button.copyFeedbackTimer) {
+        clearTimeout(button.copyFeedbackTimer);
+      }
+
+      button.copyFeedbackTimer = setTimeout(function() {
+        button.textContent = originalText;
+        button.classList.remove("is-copied");
+      }, 1500);
     }
 
     renderDocumentChecklist();
