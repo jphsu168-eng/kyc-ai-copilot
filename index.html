@@ -390,20 +390,31 @@
       text-transform: uppercase;
     }
 
-    .badge {
-      min-width: max-content;
-      min-height: 30px;
+    .section-heading-line {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .section-heading-line h2 {
+      margin: 0;
+    }
+
+    .section-pill {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      padding: 6px 10px;
+      min-height: 24px;
+      padding: 4px 8px;
+      border: 1px solid rgba(111, 182, 255, 0.22);
       border-radius: 999px;
-      color: #d8e9ff;
-      background: linear-gradient(135deg, rgba(111, 182, 255, 0.19), rgba(141, 124, 255, 0.18));
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      font-size: 11px;
+      color: #bcd8fb;
+      background: rgba(111, 182, 255, 0.07);
+      font-size: 10px;
       font-weight: 800;
       letter-spacing: 0.04em;
+      line-height: 1.2;
+      text-transform: uppercase;
       white-space: nowrap;
     }
 
@@ -1444,10 +1455,9 @@
         <div class="panel-header">
           <div>
             <p class="step-kicker">Demo Controls</p>
-            <h2>Sample Cases</h2>
+            <div class="section-heading-line"><span class="section-pill">Overview</span><h2>Sample Cases</h2></div>
             <p class="note">Load a realistic sample, then generate the review to see the workflow outputs.</p>
           </div>
-          <div class="badge">Overview</div>
         </div>
         <div class="sample-actions" aria-label="Overview sample cases">
           <button type="button" class="secondary sample-button" data-sample="lowRisk" aria-pressed="false" onclick="loadSampleCase('lowRisk')">Load Low Risk Case<span class="selected-indicator" aria-hidden="true">✓ Selected</span></button>
@@ -1466,10 +1476,9 @@
         <div class="panel-header">
           <div>
             <p class="step-kicker">Case Snapshot</p>
-            <h2>Short Case Snapshot</h2>
+            <div class="section-heading-line"><span class="section-pill">Overview</span><h2>Short Case Snapshot</h2></div>
             <p class="note">A compact summary appears here after a case review is generated.</p>
           </div>
-          <div class="badge">Snapshot</div>
         </div>
         <div id="caseSnapshot" class="output-box empty">Generate a case review to see a short case snapshot.</div>
       </div>
@@ -1482,10 +1491,9 @@
         <div class="panel-header">
           <div>
             <p class="step-kicker">Case Review Inputs · Step 1: Case Setup</p>
-            <h2>Case Intake</h2>
+            <div class="section-heading-line"><span class="section-pill">Step 1</span><h2>Case Intake</h2></div>
             <p class="note">Enter the business customer profile, review type, trigger event context, and SLA dates.</p>
           </div>
-          <div class="badge">Step 1</div>
         </div>
 
         <div class="case-subsection demo-shortcuts">
@@ -1615,10 +1623,9 @@
         <div class="panel-header">
           <div>
             <p class="step-kicker">Case Review Inputs · Step 2A: Evidence &amp; Ownership Review</p>
-            <h2>Document Evidence Review</h2>
+            <div class="section-heading-line"><span class="section-pill">Step 2A</span><h2>Document Evidence Review</h2></div>
             <p class="note">Set the status for each required business customer document. Missing, expired, incomplete, and inconsistent evidence are flagged automatically.</p>
           </div>
-          <div class="badge">Step 2A</div>
         </div>
         <div id="evidenceSummary" class="evidence-summary">Evidence Summary: 0 missing · 0 incomplete · 0 acceptable</div>
         <div id="documentChecklist" class="evidence-table"></div>
@@ -1628,10 +1635,9 @@
         <div class="panel-header">
           <div>
             <p class="step-kicker">Case Review Inputs · Step 2B: Evidence &amp; Ownership Review</p>
-            <h2>Beneficial Ownership Review</h2>
+            <div class="section-heading-line"><span class="section-pill">Step 2B</span><h2>Beneficial Ownership Review</h2></div>
             <p class="note">Assess whether ownership information is complete or requires escalation.</p>
           </div>
-          <div class="badge">Step 2B</div>
         </div>
 
         <p id="boApplicabilityNote" class="bo-context-note">Corporate ownership checks remain part of the educational BO completeness review.</p>
@@ -1719,10 +1725,9 @@
         <div class="panel-header">
           <div>
             <p class="step-kicker">Case Review Inputs · Step 2C: Evidence &amp; Ownership Review</p>
-            <h2>SOF / SOW Review</h2>
+            <div class="section-heading-line"><span class="section-pill">Step 2C</span><h2>SOF / SOW Review</h2></div>
             <p class="note">Document whether source of funds and source of wealth support is clear enough for review.</p>
           </div>
-          <div class="badge">Step 2C</div>
         </div>
 
         <div class="grid sof-sow-row">
@@ -1757,10 +1762,9 @@
         <div class="panel-header">
           <div>
             <p class="step-kicker">Case Review Inputs · Step 3: Screening &amp; Risk Review</p>
-            <h2>Screening Triage</h2>
+            <div class="section-heading-line"><span class="section-pill">Step 3</span><h2>Screening Triage</h2></div>
             <p class="note">Document potential screening-hit indicators. This does not clear real hits.</p>
           </div>
-          <div class="badge">Step 3</div>
         </div>
 
         <div class="grid">
@@ -1824,10 +1828,9 @@
         <div class="panel-header">
           <div>
             <p class="step-kicker">Case Review Inputs · Step 3: Screening &amp; Risk Review</p>
-            <h2>Risk Indicators</h2>
+            <div class="section-heading-line"><span class="section-pill">Step 3</span><h2>Risk Indicators</h2></div>
             <p class="note">Select operational risk factors not already captured above.</p>
           </div>
-          <div class="badge">Step 3</div>
         </div>
 
         <div class="grid">
@@ -1859,10 +1862,9 @@
         <div class="panel-header">
           <div>
             <p class="step-kicker">Bottleneck Engine</p>
-            <h2>Results Dashboard</h2>
+            <div class="section-heading-line"><span class="section-pill">Results</span><h2>Results Dashboard</h2></div>
             <p class="note">View case aging, document gaps, BO status, screening triage, risk score, bottlenecks, readiness, and audit-ready outputs for enterprise KYC teams.</p>
           </div>
-          <div class="badge">Results</div>
         </div>
 
         <div id="resultsEmptyState" class="view-empty-state" aria-live="polite">
@@ -1985,10 +1987,9 @@
         <div class="panel-header">
           <div>
             <p class="step-kicker">Governance &amp; Audit</p>
-            <h2>Analyst Review Note</h2>
+            <div class="section-heading-line"><span class="section-pill">Governance</span><h2>Analyst Review Note</h2></div>
             <p class="note">Copy the generated analyst work note.</p>
           </div>
-          <div class="badge">Governance</div>
         </div>
         <div id="analystNote" class="output-box output-panel empty">Generate a review to create the analyst note.</div>
         <div class="utility-button-row">
@@ -2000,10 +2001,9 @@
         <div class="panel-header">
           <div>
             <p class="step-kicker">Action Center</p>
-            <h2>Follow-Up Action Tracker</h2>
+            <div class="section-heading-line"><span class="section-pill">Action</span><h2>Follow-Up Action Tracker</h2></div>
             <p class="note">Track action items generated from case bottlenecks.</p>
           </div>
-          <div class="badge">Action</div>
         </div>
         <div id="followUpOutput" class="data-table empty-state">Generate a case review first to create follow-up actions.</div>
       </section>
@@ -2012,10 +2012,9 @@
         <div class="panel-header">
           <div>
             <p class="step-kicker">Action Center</p>
-            <h2>Follow-Up Communication Draft</h2>
+            <div class="section-heading-line"><span class="section-pill">Action</span><h2>Follow-Up Communication Draft</h2></div>
             <p class="note">Generate a role-specific message based on current blockers and follow-up actions.</p>
           </div>
-          <div class="badge">Action</div>
         </div>
         <div class="control-row communication-controls" aria-label="Follow-up communication settings">
           <div>
@@ -2050,10 +2049,9 @@
         <div class="panel-header">
           <div>
             <p class="step-kicker">Governance &amp; Audit</p>
-            <h2>Audit Trail</h2>
+            <div class="section-heading-line"><span class="section-pill">Governance</span><h2>Audit Trail</h2></div>
             <p class="note">Copy a rule-trigger summary for audit-style documentation.</p>
           </div>
-          <div class="badge">Governance</div>
         </div>
         <div id="auditTrail" class="output-box output-panel empty">Generate a review to create the audit trail summary.</div>
         <div class="utility-button-row">
@@ -2065,10 +2063,9 @@
         <div class="panel-header">
           <div>
             <p class="step-kicker">Governance &amp; Audit</p>
-            <h2>Reviewer Checklist</h2>
+            <div class="section-heading-line"><span class="section-pill">Governance</span><h2>Reviewer Checklist</h2></div>
             <p class="note">Auto-generated quality-control checklist for human review. This does not imply final approval.</p>
           </div>
-          <div class="badge">Governance</div>
         </div>
         <div id="reviewerChecklist" class="output-box output-panel empty">Generate a review to create the reviewer checklist.</div>
         <div class="workflow-actions">
@@ -2082,10 +2079,9 @@
       <div class="panel-header">
         <div>
           <p class="step-kicker">Governance &amp; Audit</p>
-          <h2>Explainability Center</h2>
+          <div class="section-heading-line"><span class="section-pill">Governance</span><h2>Explainability Center</h2></div>
           <p class="note">See which rule-based checks drive the risk score, bottleneck diagnosis, and case readiness decision.</p>
         </div>
-        <div class="badge">Governance</div>
       </div>
 
       <div class="triggered-rules">
