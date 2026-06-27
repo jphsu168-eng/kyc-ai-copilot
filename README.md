@@ -265,22 +265,30 @@ The Explainability Center first shows **Triggered Rules for This Case**, meaning
 - Document management integration
 - Manager dashboard
 
-## Future Architecture
+## Future Technical Roadmap
 
-A production version could include the following architecture. The current project does **not** include these production integrations.
+### Current State
 
-- **Frontend:** a production-grade web application interface
-- **Backend API:** secure service layer for workflow orchestration and policy execution
-- **Database:** durable case, customer, action, and review persistence
-- **Authentication:** enterprise identity and session management
-- **Role-based access control:** permissions for Analysts, Reviewers, Compliance Officers, QA, and Managers
-- **Core tables:** cases, customers, documents, beneficial_owners, screening_hits, risk_assessments, follow_up_actions, audit_events, users, review_approvals
-- **Rule Engine:** configurable JSON-based policy rules
-- **Model and rule governance:** versioning, approvals, testing evidence, and change controls for scoring and routing logic
-- **Immutable audit log:** append-only event history for case and policy decisions
-- **Document storage:** controlled evidence repository with retention and access policies
-- **Reviewer approval workflow:** maker-checker submission, review, disposition, and approval states
-- **Vendor integrations:** screening, adverse media, identity, document, and case-management providers
+The current project is a static frontend prototype built with one HTML file, embedded CSS, and browser-based JavaScript. It demonstrates workflow concepts locally without a backend, database, authentication, persistent storage, production integrations, or real customer-data processing.
+
+The components below describe a possible future production architecture. They are roadmap concepts only and are **not** features of the current application.
+
+### Potential Production Architecture
+
+- **React or Next.js frontend:** component-based case workspaces, queue views, reusable controls, routing, and maintainable application state.
+- **FastAPI or Node.js backend:** authenticated APIs for case orchestration, assignments, validation, rule execution, review controls, and controlled integrations.
+- **PostgreSQL database:** durable storage for cases, legal entities, beneficial owners, evidence metadata, risk assessments, actions, reviews, and workflow status.
+- **Role-based access control:** permissions for KYC Analysts, Reviewers, Compliance Officers, QA users, Relationship Managers, and Operations Managers.
+- **Case queue and assignment workflow:** prioritized work queues, ownership, reassignment, service-level targets, due dates, and workload tracking.
+- **Maker-checker review process:** formal submission, independent review, return-for-information, escalation, disposition, and approval states.
+- **Backend validation engine:** server-side required-field, date, evidence-quality, and logical-consistency checks that cannot be bypassed by the frontend.
+- **Configurable rule engine:** institution-approved, versioned policy rules for risk scoring, reason codes, routing, escalation, and document requirements.
+- **Append-only audit event log:** immutable workflow events recording input changes, rule versions, assignments, decisions, reviewer actions, and timestamps.
+- **Document metadata and secure document storage:** controlled evidence upload, classification, versioning, retention, encryption, access logging, and document lifecycle management.
+- **API integrations:** authorized connections to screening vendors, corporate registries, document systems, and internal case-management platforms, subject to institutional controls and vendor agreements.
+- **AI-assisted drafting and summarization only:** human-reviewed assistance for analyst notes, follow-up communication, case summaries, and document-gap narratives. AI should not independently approve customers, clear screening alerts, assign final risk ratings, or make regulatory decisions.
+
+This roadmap does not imply that the current prototype performs real sanctions screening, OFAC checks, adverse media searches, identity verification, transaction monitoring, customer verification, or bank decisioning. Final review, escalation, approval, onboarding, and regulatory decisions require qualified human compliance review and institution-specific policies.
 
 ## How To Run
 
