@@ -1053,7 +1053,12 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
+    .workflow-actions.single {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
     .workflow-actions .secondary,
+    .workflow-actions .secondary-button,
     .workflow-actions .outline {
       width: 100%;
       margin-top: 0;
@@ -1083,6 +1088,38 @@
       transform: none;
     }
 
+    button:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid rgba(111, 182, 255, 0.5);
+      outline-offset: 3px;
+    }
+
+    .primary-cta {
+      min-height: 46px;
+      padding: 12px 17px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #2f91f2, #7767ec);
+      border-color: rgba(177, 218, 255, 0.48);
+      box-shadow: 0 14px 32px rgba(63, 136, 239, 0.3);
+      font-weight: 800;
+    }
+
+    .primary-cta:hover {
+      color: #ffffff;
+      background: linear-gradient(135deg, #43a3ff, #8878fa);
+      border-color: rgba(210, 234, 255, 0.68);
+      box-shadow: 0 17px 38px rgba(63, 136, 239, 0.38);
+      transform: none;
+    }
+
+    .primary-cta:active {
+      color: #ffffff;
+      background: linear-gradient(135deg, #277fcf, #6557d2);
+      border-color: rgba(177, 218, 255, 0.48);
+      box-shadow: 0 8px 20px rgba(63, 136, 239, 0.26);
+      transform: translateY(1px);
+    }
+
     .outline {
       color: #dcecff;
       background: rgba(255, 255, 255, 0.04);
@@ -1094,7 +1131,8 @@
       background: rgba(111, 182, 255, 0.09);
     }
 
-    .secondary {
+    .secondary,
+    .secondary-button {
       margin-top: 12px;
       width: auto;
       min-height: 38px;
@@ -1106,11 +1144,16 @@
       box-shadow: none;
     }
 
-    .secondary:hover {
+    .secondary:hover,
+    .secondary-button:hover {
       background: rgba(141, 124, 255, 0.16);
+      border-color: rgba(141, 124, 255, 0.32);
+      box-shadow: 0 8px 20px rgba(20, 35, 62, 0.22);
     }
 
-    .secondary:disabled {
+    .secondary:disabled,
+    .secondary-button:disabled,
+    .utility-button:disabled {
       background: rgba(255, 255, 255, 0.06);
       color: #738197;
       cursor: not-allowed;
@@ -1118,7 +1161,33 @@
       transform: none;
     }
 
-    .secondary.is-copied {
+    .utility-button {
+      width: auto;
+      min-height: 34px;
+      padding: 7px 11px;
+      color: #cfe3fb;
+      background: rgba(111, 182, 255, 0.08);
+      border-color: rgba(111, 182, 255, 0.18);
+      font-size: 12px;
+      font-weight: 750;
+      box-shadow: none;
+    }
+
+    .utility-button:hover {
+      color: #ffffff;
+      background: rgba(111, 182, 255, 0.14);
+      border-color: rgba(111, 182, 255, 0.34);
+      box-shadow: 0 7px 18px rgba(20, 35, 62, 0.2);
+      transform: none;
+    }
+
+    .utility-button:active {
+      background: rgba(111, 182, 255, 0.1);
+      transform: translateY(1px);
+    }
+
+    .secondary.is-copied,
+    .utility-button.is-copied {
       color: #dff7ed;
       border-color: rgba(85, 217, 155, 0.36);
       background: rgba(85, 217, 155, 0.12);
@@ -1477,6 +1546,18 @@
       font-weight: 850;
     }
 
+    .utility-control {
+      color: #cfe3fb;
+      background: rgba(111, 182, 255, 0.035);
+      transition: color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+    }
+
+    .utility-control:hover {
+      color: #ffffff;
+      background: rgba(111, 182, 255, 0.08);
+      box-shadow: inset 0 0 0 1px rgba(111, 182, 255, 0.12);
+    }
+
     .content-disclosure-body {
       padding: 0 15px 15px;
       border-top: 1px solid rgba(167, 190, 224, 0.12);
@@ -1526,6 +1607,11 @@
 
     .utility-button-row .secondary {
       margin-top: 0;
+    }
+
+    .utility-button-row .utility-button {
+      margin-top: 0;
+      min-width: 160px;
     }
 
     .explainability-center {
@@ -1760,8 +1846,8 @@
         </div>
         <p id="overviewSampleFeedback" class="button-feedback">No sample case loaded yet.</p>
         <p class="stale-results-warning" role="status" hidden>Inputs changed. Regenerate case review to refresh results.</p>
-        <div class="workflow-actions">
-          <button type="button" class="secondary" onclick="switchView('case-input')">Start Case Input →</button>
+        <div class="workflow-actions single">
+          <button type="button" class="primary-cta" onclick="switchView('case-input')">Start Case Input →</button>
         </div>
       </div>
       <div class="panel">
@@ -1776,7 +1862,7 @@
       </div>
     </section>
     <details class="wrap panel about-workflow-card">
-      <summary>
+      <summary class="utility-control">
         <div class="about-summary-copy">
           <p class="step-kicker">Prototype Scope</p>
           <div class="section-heading-line"><span class="section-pill">About</span><h2 id="aboutWorkflowTitle">About this workflow</h2></div>
@@ -1868,7 +1954,7 @@
         </div>
 
         <details id="optionalRiskContext" class="case-subsection optional-context">
-          <summary>
+          <summary class="utility-control">
             <span class="collapse-summary-copy">
               <span class="collapse-summary-title">Optional Risk Context</span>
               <span id="optionalRiskContextSummary" class="collapse-summary-meta is-collapsed">Optional for new onboarding · 3 fields hidden</span>
@@ -1976,7 +2062,7 @@
         </div>
 
         <details class="bo-advanced">
-          <summary>
+          <summary class="utility-control">
             <span class="collapse-summary-copy">
               <span class="collapse-summary-title">Advanced BO Details</span>
               <span class="collapse-summary-meta is-collapsed">4 supporting fields hidden</span>
@@ -2159,9 +2245,9 @@
       <p class="stale-results-warning" role="status" hidden>Inputs changed. Regenerate case review to refresh results.</p>
       <p class="workflow-helper">Complete the case inputs, then generate the review to continue.</p>
       <div class="workflow-actions three">
-        <button type="button" class="secondary" onclick="switchView('overview')">Back to Overview</button>
-        <button type="button" onclick="generateCaseReview()">Generate Case Review</button>
-        <button type="button" class="outline" onclick="resetForm()">Reset to Empty Case</button>
+        <button type="button" class="secondary-button" onclick="switchView('overview')">Back to Overview</button>
+        <button type="button" class="primary-cta" onclick="generateCaseReview()">Generate Case Review →</button>
+        <button type="button" class="secondary-button outline" onclick="resetForm()">Reset to Empty Case</button>
       </div>
     </form>
 
@@ -2212,7 +2298,7 @@
         </div>
 
         <details id="resultsDetails" class="content-disclosure">
-          <summary><span class="disclosure-collapsed-label">Show Details</span><span class="disclosure-expanded-label">Hide Details</span></summary>
+          <summary class="utility-control"><span class="disclosure-collapsed-label">Show Details</span><span class="disclosure-expanded-label">Hide Details</span></summary>
           <div class="content-disclosure-body">
             <h3 class="result-section-title" style="margin-top: 14px;">Additional Status</h3>
             <div class="metric-grid">
@@ -2247,8 +2333,8 @@
         </details>
 
         <div class="workflow-actions">
-          <button type="button" class="secondary" onclick="switchView('case-input')">Back to Case Input</button>
-          <button type="button" onclick="switchView('actions')">Continue to Actions →</button>
+          <button type="button" class="secondary-button" onclick="switchView('case-input')">Back to Case Input</button>
+          <button type="button" class="primary-cta" onclick="switchView('actions')">Continue to Actions →</button>
         </div>
         </div>
       </section>
@@ -2273,11 +2359,11 @@
         </div>
         <div id="analystNotePreview" class="output-box output-panel preview-output empty">Generate a review to create the analyst note preview.</div>
         <details class="content-disclosure">
-          <summary><span class="disclosure-collapsed-label">View Full Analyst Review Note</span><span class="disclosure-expanded-label">Hide Full Analyst Review Note</span></summary>
+          <summary class="utility-control"><span class="disclosure-collapsed-label">View Full Analyst Review Note</span><span class="disclosure-expanded-label">Hide Full Analyst Review Note</span></summary>
           <div class="content-disclosure-body">
             <div id="analystNote" class="output-box output-panel empty">Generate a review to create the analyst note.</div>
             <div class="utility-button-row">
-              <button id="copyNoteButton" type="button" class="secondary" onclick="copyText('analystNote', 'copyNoteButton')" disabled>Copy Analyst Note</button>
+              <button id="copyNoteButton" type="button" class="utility-button" onclick="copyText('analystNote', 'copyNoteButton')" disabled>Copy Analyst Note</button>
             </div>
           </div>
         </details>
@@ -2322,11 +2408,11 @@
         </div>
         <div id="emailDraft" class="output-box output-panel empty">Generate a case review first to draft follow-up communication.</div>
         <div class="utility-button-row">
-          <button id="copyEmailButton" type="button" class="secondary" onclick="copyText('emailDraft', 'copyEmailButton')" disabled>Copy Follow-Up Draft</button>
+          <button id="copyEmailButton" type="button" class="utility-button" onclick="copyText('emailDraft', 'copyEmailButton')" disabled>Copy Follow-Up Draft</button>
         </div>
         <div class="workflow-actions">
-          <button type="button" class="secondary" onclick="switchView('results')">Back to Results</button>
-          <button type="button" onclick="switchView('governance')">Continue to Governance →</button>
+          <button type="button" class="secondary-button" onclick="switchView('results')">Back to Results</button>
+          <button type="button" class="primary-cta" onclick="switchView('governance')">Continue to Governance →</button>
         </div>
       </section>
 
@@ -2340,11 +2426,11 @@
         </div>
         <div id="auditTrailPreview" class="output-box output-panel preview-output empty">Generate a review to create the audit trail preview.</div>
         <details class="content-disclosure">
-          <summary><span class="disclosure-collapsed-label">View Full Audit Trail</span><span class="disclosure-expanded-label">Hide Full Audit Trail</span></summary>
+          <summary class="utility-control"><span class="disclosure-collapsed-label">View Full Audit Trail</span><span class="disclosure-expanded-label">Hide Full Audit Trail</span></summary>
           <div class="content-disclosure-body">
             <div id="auditTrail" class="output-box output-panel empty">Generate a review to create the audit trail summary.</div>
             <div class="utility-button-row">
-              <button id="copyAuditButton" type="button" class="secondary" onclick="copyText('auditTrail', 'copyAuditButton')" disabled>Copy Audit Trail</button>
+              <button id="copyAuditButton" type="button" class="utility-button" onclick="copyText('auditTrail', 'copyAuditButton')" disabled>Copy Audit Trail</button>
             </div>
           </div>
         </details>
@@ -2360,7 +2446,7 @@
         </div>
         <div id="reviewerChecklistPreview" class="output-box output-panel preview-output empty">Generate a review to create the reviewer checklist summary.</div>
         <details class="content-disclosure">
-          <summary><span class="disclosure-collapsed-label">View Full Reviewer Checklist</span><span class="disclosure-expanded-label">Hide Full Reviewer Checklist</span></summary>
+          <summary class="utility-control"><span class="disclosure-collapsed-label">View Full Reviewer Checklist</span><span class="disclosure-expanded-label">Hide Full Reviewer Checklist</span></summary>
           <div class="content-disclosure-body">
             <div id="reviewerChecklist" class="output-box output-panel empty">Generate a review to create the reviewer checklist.</div>
           </div>
@@ -2394,8 +2480,8 @@
           </div>
         </div>
         <div class="workflow-actions">
-          <button type="button" class="secondary" onclick="switchView('actions')">Back to Actions</button>
-          <button type="button" onclick="switchView('overview')">Back to Overview</button>
+          <button type="button" class="secondary-button" onclick="switchView('actions')">Back to Actions</button>
+          <button type="button" class="primary-cta" onclick="switchView('overview')">Back to Overview →</button>
         </div>
       </section>
     </section>
@@ -2416,9 +2502,9 @@
 
       <div class="accordion-stack">
         <details class="rule-accordion">
-          <summary>
+          <summary class="utility-control">
             <span>
-              <span class="rule-summary-title">Full Rule Library</span>
+              <span class="rule-summary-title">View Full Rule Library</span>
             </span>
             <span class="accordion-icon">+</span>
           </summary>
