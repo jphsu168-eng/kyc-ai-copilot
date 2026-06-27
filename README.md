@@ -290,6 +290,59 @@ The components below describe a possible future production architecture. They ar
 
 This roadmap does not imply that the current prototype performs real sanctions screening, OFAC checks, adverse media searches, identity verification, transaction monitoring, customer verification, or bank decisioning. Final review, escalation, approval, onboarding, and regulatory decisions require qualified human compliance review and institution-specific policies.
 
+## V2 Full-Stack Migration Plan
+
+This section describes a possible future migration from the current static frontend prototype to a full-stack KYC case management platform. None of the V2 architecture or capabilities below are implemented in the current project.
+
+### Phase 1: Frontend Refactor
+
+- Move from a single `index.html` file to React, Vite, and TypeScript.
+- Split the interface into reusable layout, navigation, form, result, action, governance, and disclosure components.
+- Preserve the current workflow views: Overview, Case Input, Results, Actions, and Governance.
+- Move rule definitions, document requirements, reason-code metadata, and sample cases into separate typed modules.
+- Introduce shared application state and typed data models while preserving the current workflow behavior during migration.
+
+### Phase 2: Backend API
+
+- Add a FastAPI backend as the controlled service layer for the application.
+- Move required-field validation, logical-consistency checks, risk calculations, routing rules, and review generation from the browser to the backend.
+- Create REST endpoints for cases, validation, generated reviews, follow-up actions, analyst notes, review controls, and audit events.
+- Keep the frontend responsible for presentation and user interaction while treating backend responses as the authoritative workflow state.
+
+### Phase 3: Database
+
+- Add PostgreSQL for durable, structured storage.
+- Store customers, KYC cases, document metadata, beneficial ownership data, screening review records, follow-up actions, analyst notes, review decisions, and audit events.
+- Define stable identifiers, relationships, timestamps, status history, and retention fields for each record type.
+- Use database migrations and transactional updates to maintain consistent workflow data.
+
+### Phase 4: Review Workflow
+
+- Add role-based mock users for Analyst, Reviewer, Compliance Officer, QA, and Manager scenarios.
+- Implement an analyst and reviewer maker-checker workflow.
+- Add controlled case statuses such as Draft, Submit for Review, Return for Correction, Approved, and Closed.
+- Record assignments, comments, review outcomes, status transitions, and responsible users in the audit history.
+- Treat approval as an authorized human workflow action, not an automated result from the rule engine.
+
+### Phase 5: AI-Assisted Drafting
+
+- Add optional AI-assisted drafting for analyst review notes, follow-up messages, case summaries, and document-gap narratives.
+- Require users to review, edit, and explicitly accept AI-assisted content before it becomes part of a case record.
+- Keep rule execution, escalation controls, review status, and final disposition outside the AI drafting layer.
+- AI assistance would not make final compliance decisions, clear screening concerns, approve customers, or replace qualified human review.
+
+### Phase 6: Production Readiness
+
+- Add enterprise authentication and secure session management.
+- Add authorization and role-based access controls for cases, documents, reviews, and administrative functions.
+- Add encryption for data in transit and at rest, with managed secrets and key rotation.
+- Add an immutable or append-only audit log for material workflow, policy, data, and reviewer events.
+- Add policy and rule versioning with approval history, effective dates, testing evidence, and rollback controls.
+- Add secure document handling with malware scanning, controlled access, retention rules, download logging, and storage lifecycle management.
+- Add monitoring, backup, recovery, testing, deployment, and incident-response controls appropriate for production use.
+
+This migration plan is an architectural roadmap only. A production implementation would require institution-specific policies, security review, legal and compliance review, vendor governance, testing, and qualified human decisioning.
+
 ## How To Run
 
 Open `index.html` directly in a browser. No setup, server, API key, package install, or build step is required.
