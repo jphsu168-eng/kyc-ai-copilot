@@ -306,6 +306,36 @@ Open `index.html` directly in a browser. No setup, server, API key, package inst
 - Structured decision rules, reason codes, sample data, and UI rendering logic so the static project could be extended into a future policy-rule engine.
 - Documented limitations and human-review requirements to show responsible automation design for compliance workflows.
 
-## Human Review Disclaimer
+## Author, Disclaimer, and License
 
-This tool supports analyst workflow simulation. Final review, escalation, approval, and customer decisioning require human compliance review.
+### Author
+
+Jiangpeng Hu
+
+KYC / Compliance Operations / RegTech Portfolio Project
+
+This project demonstrates a rule-based KYC workflow prototype for case bottleneck diagnosis, evidence quality review, beneficial ownership checks, follow-up actions, analyst review notes, and audit-friendly documentation.
+
+### Legal and Compliance Disclaimer
+
+This project is an educational and portfolio-based workflow prototype. It is not a production compliance system and does not provide legal, regulatory, financial, or compliance advice.
+
+This tool does not perform real OFAC screening, sanctions screening, adverse media search, identity verification, customer verification, transaction monitoring, customer risk rating, or bank decisioning.
+
+All outputs, including risk scores, suggested review paths, reason codes, analyst notes, follow-up actions, and audit-style summaries, are rule-based simulations for demonstration purposes only.
+
+Final KYC review, escalation, approval, customer onboarding, and regulatory decisions require qualified human compliance review and institution-specific policies.
+
+### Original Work and Copyright
+
+This project was independently designed and developed by Jiangpeng Hu as a portfolio project focused on KYC operations, compliance workflow automation, and RegTech product design.
+
+Unless otherwise stated, the project content, workflow design, UI structure, rule logic, documentation, and source code are original work created for educational and portfolio demonstration purposes.
+
+### License
+
+No open-source license has been granted for this repository.
+
+The source code and project materials are provided publicly for portfolio review and demonstration purposes only. You may view the repository, but you may not copy, modify, distribute, sublicense, or use this project for commercial purposes without written permission from the author.
+
+© 2026 Jiangpeng Hu. All rights reserved.
