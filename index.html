@@ -391,15 +391,20 @@
     }
 
     .badge {
-      min-width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
+      min-width: max-content;
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px;
+      border-radius: 999px;
       color: #d8e9ff;
       background: linear-gradient(135deg, rgba(111, 182, 255, 0.19), rgba(141, 124, 255, 0.18));
       border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 11px;
       font-weight: 800;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
     }
 
     h2 {
@@ -503,6 +508,37 @@
       font-weight: 850;
       letter-spacing: 0.05em;
       text-transform: uppercase;
+    }
+
+    .collapse-summary-copy {
+      display: grid;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .collapse-summary-title {
+      color: #f3f8ff;
+    }
+
+    .collapse-summary-meta {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0;
+      line-height: 1.4;
+      text-transform: none;
+    }
+
+    .collapse-summary-meta.is-expanded {
+      display: none;
+    }
+
+    details[open] .collapse-summary-meta.is-collapsed {
+      display: none;
+    }
+
+    details[open] .collapse-summary-meta.is-expanded {
+      display: block;
     }
 
     .optional-context summary::-webkit-details-marker,
@@ -751,10 +787,12 @@
       font-weight: 850;
       line-height: 1.25;
       opacity: 0;
+      visibility: hidden;
     }
 
     .sample-button.is-selected .selected-indicator {
       opacity: 1;
+      visibility: visible;
     }
 
     .button-feedback {
@@ -1117,6 +1155,49 @@
       line-height: 1.5;
     }
 
+    .view-empty-state {
+      padding: 28px;
+      border: 1px dashed rgba(111, 182, 255, 0.3);
+      border-radius: 16px;
+      color: #dceaff;
+      background: rgba(111, 182, 255, 0.055);
+      text-align: center;
+    }
+
+    .view-empty-state strong {
+      display: block;
+      margin-bottom: 7px;
+      color: #f4f8ff;
+      font-size: 16px;
+    }
+
+    .view-empty-state p {
+      max-width: 680px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .generated-view-content {
+      display: block;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .communication-controls {
+      padding: 14px;
+      border: 1px solid rgba(167, 190, 224, 0.14);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .communication-controls + .output-panel {
+      margin-top: 2px;
+    }
+
     .utility-button-row {
       display: flex;
       justify-content: flex-start;
@@ -1189,7 +1270,7 @@
       transition: transform 160ms ease;
     }
 
-    .rule-accordion[open] .accordion-icon {
+    .rule-accordion[open] > summary .accordion-icon {
       transform: rotate(45deg);
     }
 
@@ -1354,7 +1435,7 @@
             <h2>Sample Cases</h2>
             <p class="note">Load a realistic sample, then generate the review to see the workflow outputs.</p>
           </div>
-          <div class="badge">S</div>
+          <div class="badge">Overview</div>
         </div>
         <div class="sample-actions" aria-label="Overview sample cases">
           <button type="button" class="secondary sample-button" data-sample="lowRisk" aria-pressed="false" onclick="loadSampleCase('lowRisk')">Load Low Risk Case<span class="selected-indicator" aria-hidden="true">✓ Selected</span></button>
@@ -1375,7 +1456,7 @@
             <h2>Short Case Snapshot</h2>
             <p class="note">A compact summary appears here after a case review is generated.</p>
           </div>
-          <div class="badge">O</div>
+          <div class="badge">Snapshot</div>
         </div>
         <div id="caseSnapshot" class="output-box empty">Generate a case review to see a short case snapshot.</div>
       </div>
@@ -1391,7 +1472,7 @@
             <h2>Case Intake</h2>
             <p class="note">Enter the business customer profile, review type, trigger event context, and SLA dates.</p>
           </div>
-          <div class="badge">1</div>
+          <div class="badge">Step 1</div>
         </div>
 
         <div class="case-subsection demo-shortcuts">
@@ -1465,7 +1546,13 @@
         </div>
 
         <details id="optionalRiskContext" class="case-subsection optional-context">
-          <summary>Optional Risk Context</summary>
+          <summary>
+            <span class="collapse-summary-copy">
+              <span class="collapse-summary-title">Optional Risk Context</span>
+              <span id="optionalRiskContextSummary" class="collapse-summary-meta is-collapsed">Optional for new onboarding · 3 fields hidden</span>
+              <span class="collapse-summary-meta is-expanded">Trigger, activity, and product context shown</span>
+            </span>
+          </summary>
           <div class="optional-context-body">
             <p id="triggerContextNote" class="subsection-note">Use these fields when a review is driven by a trigger event, monitoring alert, periodic refresh, expected activity, or product risk.</p>
             <div class="grid">
@@ -1518,7 +1605,7 @@
             <h2>Document Evidence Review</h2>
             <p class="note">Set the status for each required business customer document. Missing, expired, incomplete, and inconsistent evidence are flagged automatically.</p>
           </div>
-          <div class="badge">2</div>
+          <div class="badge">Step 2A</div>
         </div>
         <div id="evidenceSummary" class="evidence-summary">Evidence Summary: 0 missing · 0 incomplete · 0 acceptable</div>
         <div id="documentChecklist" class="evidence-table"></div>
@@ -1531,7 +1618,7 @@
             <h2>Beneficial Ownership Review</h2>
             <p class="note">Assess whether ownership information is complete or requires escalation.</p>
           </div>
-          <div class="badge">3</div>
+          <div class="badge">Step 2B</div>
         </div>
 
         <p id="boApplicabilityNote" class="bo-context-note">Corporate ownership checks remain part of the educational BO completeness review.</p>
@@ -1570,7 +1657,13 @@
         </div>
 
         <details class="bo-advanced">
-          <summary>Advanced BO Details</summary>
+          <summary>
+            <span class="collapse-summary-copy">
+              <span class="collapse-summary-title">Advanced BO Details</span>
+              <span class="collapse-summary-meta is-collapsed">4 supporting fields hidden</span>
+              <span class="collapse-summary-meta is-expanded">4 supporting fields shown</span>
+            </span>
+          </summary>
           <div class="bo-advanced-body">
             <p class="subsection-note">These supporting fields still feed the risk score, BO status, analyst note, audit trail, and triggered rules.</p>
             <div class="grid bo-advanced-grid">
@@ -1616,7 +1709,7 @@
             <h2>SOF / SOW Review</h2>
             <p class="note">Document whether source of funds and source of wealth support is clear enough for review.</p>
           </div>
-          <div class="badge">4</div>
+          <div class="badge">Step 2C</div>
         </div>
 
         <div class="grid sof-sow-row">
@@ -1654,7 +1747,7 @@
             <h2>Screening Triage</h2>
             <p class="note">Document potential screening-hit indicators. This does not clear real hits.</p>
           </div>
-          <div class="badge">4</div>
+          <div class="badge">Step 3</div>
         </div>
 
         <div class="grid">
@@ -1721,7 +1814,7 @@
             <h2>Risk Indicators</h2>
             <p class="note">Select operational risk factors not already captured above.</p>
           </div>
-          <div class="badge">5</div>
+          <div class="badge">Step 3</div>
         </div>
 
         <div class="grid">
@@ -1755,9 +1848,15 @@
             <h2>Results Dashboard</h2>
             <p class="note">View case aging, document gaps, BO status, screening triage, risk score, bottlenecks, readiness, and audit-ready outputs for enterprise KYC teams.</p>
           </div>
-          <div class="badge">6</div>
+          <div class="badge">Results</div>
         </div>
 
+        <div id="resultsEmptyState" class="view-empty-state" aria-live="polite">
+          <strong>No case review generated yet</strong>
+          <p>Go to Case Input and click Generate Case Review to view diagnostic results.</p>
+        </div>
+
+        <div id="resultsGeneratedContent" class="generated-view-content" hidden>
         <h3 class="result-section-title" style="margin-top: 0; padding-top: 0; border-top: 0;">Executive Summary</h3>
         <div class="metric-grid">
           <div class="metric">
@@ -1855,16 +1954,27 @@
           <button type="button" class="secondary" onclick="switchView('case-input')">Back to Case Input</button>
           <button type="button" onclick="switchView('actions')">Continue to Actions →</button>
         </div>
+        </div>
       </section>
 
-      <section class="panel section-card" data-view="governance">
+      <section id="actionsEmptyState" class="panel view-empty-state" data-view="actions" aria-live="polite">
+        <strong>No follow-up actions yet</strong>
+        <p>Generate a case review to create action items and communication draft.</p>
+      </section>
+
+      <section id="governanceEmptyState" class="panel view-empty-state" data-view="governance" aria-live="polite">
+        <strong>No governance output yet</strong>
+        <p>Generate a case review to create analyst note, reviewer checklist, audit trail, and triggered rules.</p>
+      </section>
+
+      <section class="panel section-card generated-output-section" data-view="governance" hidden>
         <div class="panel-header">
           <div>
             <p class="step-kicker">Governance &amp; Audit</p>
             <h2>Analyst Review Note</h2>
             <p class="note">Copy the generated analyst work note.</p>
           </div>
-          <div class="badge">7</div>
+          <div class="badge">Governance</div>
         </div>
         <div id="analystNote" class="output-box output-panel empty">Generate a review to create the analyst note.</div>
         <div class="utility-button-row">
@@ -1872,28 +1982,28 @@
         </div>
       </section>
 
-      <section class="panel section-card" data-view="actions">
+      <section class="panel section-card generated-output-section" data-view="actions" hidden>
         <div class="panel-header">
           <div>
             <p class="step-kicker">Action Center</p>
             <h2>Follow-Up Action Tracker</h2>
             <p class="note">Track action items generated from case bottlenecks.</p>
           </div>
-          <div class="badge">8</div>
+          <div class="badge">Action</div>
         </div>
         <div id="followUpOutput" class="data-table empty-state">Generate a case review first to create follow-up actions.</div>
       </section>
 
-      <section class="panel section-card" data-view="actions">
+      <section class="panel section-card generated-output-section" data-view="actions" hidden>
         <div class="panel-header">
           <div>
             <p class="step-kicker">Action Center</p>
             <h2>Follow-Up Communication Draft</h2>
             <p class="note">Generate a role-specific message based on current blockers and follow-up actions.</p>
           </div>
-          <div class="badge">M</div>
+          <div class="badge">Action</div>
         </div>
-        <div class="control-row">
+        <div class="control-row communication-controls" aria-label="Follow-up communication settings">
           <div>
             <label for="emailRecipientType">Recipient Type</label>
             <select id="emailRecipientType" onchange="updateEmailDraftFromControls()">
@@ -1922,14 +2032,14 @@
         </div>
       </section>
 
-      <section class="panel section-card" data-view="governance">
+      <section class="panel section-card generated-output-section" data-view="governance" hidden>
         <div class="panel-header">
           <div>
             <p class="step-kicker">Governance &amp; Audit</p>
             <h2>Audit Trail</h2>
             <p class="note">Copy a rule-trigger summary for audit-style documentation.</p>
           </div>
-          <div class="badge">9</div>
+          <div class="badge">Governance</div>
         </div>
         <div id="auditTrail" class="output-box output-panel empty">Generate a review to create the audit trail summary.</div>
         <div class="utility-button-row">
@@ -1937,14 +2047,14 @@
         </div>
       </section>
 
-      <section class="panel section-card" data-view="governance">
+      <section class="panel section-card generated-output-section" data-view="governance" hidden>
         <div class="panel-header">
           <div>
             <p class="step-kicker">Governance &amp; Audit</p>
             <h2>Reviewer Checklist</h2>
             <p class="note">Auto-generated quality-control checklist for human review. This does not imply final approval.</p>
           </div>
-          <div class="badge">Q</div>
+          <div class="badge">Governance</div>
         </div>
         <div id="reviewerChecklist" class="output-box output-panel empty">Generate a review to create the reviewer checklist.</div>
         <div class="workflow-actions">
@@ -1954,14 +2064,14 @@
       </section>
     </section>
 
-    <section class="panel explainability-center" data-view="governance">
+    <section class="panel explainability-center generated-output-section" data-view="governance" hidden>
       <div class="panel-header">
         <div>
           <p class="step-kicker">Governance &amp; Audit</p>
           <h2>Explainability Center</h2>
           <p class="note">See which rule-based checks drive the risk score, bottleneck diagnosis, and case readiness decision.</p>
         </div>
-        <div class="badge">R</div>
+        <div class="badge">Governance</div>
       </div>
 
       <div class="triggered-rules">
@@ -2488,7 +2598,8 @@
       const relationshipType = getValue("relationshipType");
       const optionalContext = document.getElementById("optionalRiskContext");
       const note = document.getElementById("triggerContextNote");
-      if (!optionalContext || !note) return;
+      const summary = document.getElementById("optionalRiskContextSummary");
+      if (!optionalContext || !note || !summary) return;
 
       const triggerDrivenReview = relationshipType === "Trigger Event Review" ||
         relationshipType === "Ongoing Monitoring Alert" ||
@@ -2496,10 +2607,10 @@
 
       optionalContext.classList.toggle("context-emphasis", triggerDrivenReview);
       if (triggerDrivenReview) {
-        optionalContext.open = true;
+        summary.textContent = "Recommended for this review type · 3 fields hidden";
         note.textContent = "This review type usually needs trigger context. Select the reason, expected activity, and product/service so the refresh and risk profile outputs can explain the case.";
       } else {
-        optionalContext.open = false;
+        summary.textContent = "Optional for new onboarding · 3 fields hidden";
         note.textContent = "Optional for new onboarding unless expected activity, product/service, or trigger context is useful for the risk profile.";
       }
     }
@@ -2625,7 +2736,6 @@
       document.querySelectorAll(".sample-button").forEach(function(button) {
         const isSelected = button.getAttribute("data-sample") === selectedSampleCase;
         button.classList.toggle("is-selected", isSelected);
-        button.classList.toggle("is-active", isSelected);
         button.setAttribute("aria-pressed", isSelected ? "true" : "false");
       });
 
@@ -2640,6 +2750,22 @@
           element.classList.remove("is-active");
           element.textContent = "No sample case loaded yet.";
         }
+      });
+    }
+
+    function setGeneratedViewVisibility(isGenerated) {
+      const resultsEmptyState = document.getElementById("resultsEmptyState");
+      const resultsGeneratedContent = document.getElementById("resultsGeneratedContent");
+      const actionsEmptyState = document.getElementById("actionsEmptyState");
+      const governanceEmptyState = document.getElementById("governanceEmptyState");
+
+      if (resultsEmptyState) resultsEmptyState.hidden = isGenerated;
+      if (resultsGeneratedContent) resultsGeneratedContent.hidden = !isGenerated;
+      if (actionsEmptyState) actionsEmptyState.hidden = isGenerated;
+      if (governanceEmptyState) governanceEmptyState.hidden = isGenerated;
+
+      document.querySelectorAll(".generated-output-section").forEach(function(section) {
+        section.hidden = !isGenerated;
       });
     }
 
@@ -3756,6 +3882,7 @@
       const triggeredPolicyRules = getTriggeredRulesFromReasonCodes(reasonCodes);
       const generatedAt = new Date().toLocaleString("en-US");
       reviewGenerated = true;
+      setGeneratedViewVisibility(true);
       currentEmailDraft = generateEmailDraft(data, missingDocuments, boStatus, screening, aging);
       currentEmailContext = {
         data: data,
@@ -4023,6 +4150,11 @@
       reviewGenerated = false;
       selectedSampleCase = "";
       updateSampleSelection("");
+      setGeneratedViewVisibility(false);
+
+      document.querySelectorAll("#optionalRiskContext, .bo-advanced, .rule-accordion").forEach(function(details) {
+        details.open = false;
+      });
 
       document.getElementById("caseAgingStatus").textContent = "Enter Case Dates";
       document.getElementById("riskScore").textContent = "Awaiting Review";
